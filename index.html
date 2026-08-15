@@ -7,6 +7,8 @@
 
     <title>MNU-UNAD | Modelo de Naciones Unidas</title>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
 
         * {
@@ -84,19 +86,54 @@
             min-height: 80px;
         }
 
-        .button {
-            display: inline-block;
+        button {
             margin-top: 15px;
             padding: 13px 28px;
             background: #003366;
             color: white;
-            text-decoration: none;
+            border: none;
             border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .login {
+            display: none;
+            max-width: 450px;
+            margin: 40px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .login h2 {
+            text-align: center;
+        }
+
+        .login label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 6px;
             font-weight: bold;
         }
 
-        .button:hover {
-            opacity: 0.9;
+        .login input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 16px;
+        }
+
+        .error {
+            margin-top: 15px;
+            color: #b91c1c;
+            text-align: center;
         }
 
         footer {
@@ -112,96 +149,248 @@
 
 <body>
 
-    <header>
+<header>
 
-        <h1>🇺🇳 MNU-UNAD</h1>
+    <h1>🇺🇳 MNU-UNAD</h1>
+
+    <p>Modelo de Naciones Unidas</p>
+
+</header>
+
+
+<main>
+
+    <section class="welcome">
+
+        <h2>Plataforma de Simulación</h2>
 
         <p>
-            Modelo de Naciones Unidas
+            Universidad Nacional Abierta y a Distancia – UNAD
         </p>
 
-    </header>
+        <p>
+            Curso: Instituciones y Organismos Internacionales
+        </p>
+
+        <p>
+            Plataforma para la preparación, participación y
+            simulación del Modelo de Naciones Unidas.
+        </p>
+
+    </section>
 
 
-    <main>
+    <section class="cards">
 
-        <section class="welcome">
+        <div class="card">
 
-            <h2>
-                Plataforma de Simulación
-            </h2>
+            <h3>👨‍💼 Director</h3>
 
             <p>
-                Universidad Nacional Abierta y a Distancia – UNAD
+                Administración de periodos, simulaciones,
+                comités, delegaciones, anteproyectos y votaciones.
             </p>
+
+            <button onclick="mostrarLogin()">
+                Ingresar como Director
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🎓 Estudiante</h3>
 
             <p>
-                Curso: Instituciones y Organismos Internacionales
+                Participación en el comité, consulta del
+                anteproyecto y votación.
             </p>
 
-            <p>
-                Espacio académico para la preparación,
-                participación y simulación del Modelo de Naciones Unidas.
-            </p>
+            <button onclick="alert('Acceso de estudiante próximamente')">
+                Ingresar como Estudiante
+            </button>
 
-        </section>
+        </div>
 
-
-        <section class="cards">
+    </section>
 
 
-            <div class="card">
+    <section id="login" class="login">
 
-                <h3>
-                    👨‍💼 Director
-                </h3>
+        <h2>👨‍💼 Acceso del Director</h2>
 
-                <p>
-                    Administración de periodos académicos,
-                    simulaciones, comités, delegaciones,
-                    anteproyectos y procesos de votación.
-                </p>
+        <label for="email">
+            Correo electrónico
+        </label>
 
-                <a href="#" class="button">
-                    Ingresar como Director
-                </a>
-
-            </div>
+        <input
+            type="email"
+            id="email"
+            placeholder="Correo electrónico"
+        >
 
 
-            <div class="card">
+        <label for="password">
+            Contraseña
+        </label>
 
-                <h3>
-                    🎓 Estudiante
-                </h3>
-
-                <p>
-                    Consulta tu delegación, participa en el
-                    comité asignado, estudia el anteproyecto
-                    y emite tu voto.
-                </p>
-
-                <a href="#" class="button">
-                    Ingresar como Estudiante
-                </a>
-
-            </div>
+        <input
+            type="password"
+            id="password"
+            placeholder="Contraseña"
+        >
 
 
-        </section>
+        <button onclick="loginDirector()">
+            INGRESAR
+        </button>
 
-    </main>
+        <button onclick="cerrarLogin()">
+            CANCELAR
+        </button>
+
+        <div id="error" class="error"></div>
+
+    </section>
+
+</main>
 
 
-    <footer>
+<footer>
 
-        MNU-UNAD © 2026
-        <br>
-        Universidad Nacional Abierta y a Distancia – UNAD
+    MNU-UNAD © 2026
+    <br>
+    Universidad Nacional Abierta y a Distancia – UNAD
 
-    </footer>
+</footer>
+
+
+<script>
+
+    const SUPABASE_URL =
+        "https://oqjcpcbkrxbopizstjjg.supabase.co";
+
+    const SUPABASE_KEY =
+        "sb_publishable_nk819s0ketgJH9tNno28rA_vm8f4sAJ";
+
+
+    const supabaseClient =
+        supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+
+    function mostrarLogin() {
+
+        document.getElementById("login").style.display = "block";
+
+        document.getElementById("login").scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+
+
+    function cerrarLogin() {
+
+        document.getElementById("login").style.display = "none";
+
+        document.getElementById("error").innerText = "";
+
+    }
+
+
+    async function loginDirector() {
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+        const error =
+            document.getElementById("error");
+
+
+        error.innerText = "";
+
+
+        if (!email || !password) {
+
+            error.innerText =
+                "Por favor ingrese correo y contraseña.";
+
+            return;
+        }
+
+
+        const { data, error: loginError } =
+            await supabaseClient.auth.signInWithPassword({
+
+                email: email,
+
+                password: password
+
+            });
+
+
+        if (loginError) {
+
+            error.innerText =
+                "No fue posible iniciar sesión: "
+                + loginError.message;
+
+            return;
+        }
+
+
+        const user = data.user;
+
+
+        const { data: profile, error: profileError } =
+            await supabaseClient
+                .from("profiles")
+                .select("*")
+                .eq("id", user.id)
+                .single();
+
+
+        if (profileError) {
+
+            error.innerText =
+                "Usuario autenticado, pero no se encontró su perfil.";
+
+            return;
+        }
+
+
+        if (
+            profile.role !== "director"
+            || profile.active !== true
+        ) {
+
+            await supabaseClient.auth.signOut();
+
+            error.innerText =
+                "Este usuario no tiene permisos de Director.";
+
+            return;
+        }
+
+
+        alert(
+            "¡Bienvenido, "
+            + profile.full_name
+            + "!"
+        );
+
+    }
+
+</script>
 
 </body>
 
 </html>
-Forzar publicación de GitHub Pages
+Conectar login del Director con Supabase
